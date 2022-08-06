@@ -5,7 +5,7 @@ import "./login.css"
 // import API from "../API/API.js"
 
 function Login() {
- const API = "https://my-third-project.herokuapp.com/"
+ const API = "https://my-third-project.herokuapp.com"
 
   const navigate =useNavigate()
 
