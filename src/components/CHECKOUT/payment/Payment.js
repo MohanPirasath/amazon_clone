@@ -10,7 +10,8 @@ import { Routes, Route, Link } from "react-router-dom";
 import Fab from '@mui/material/Fab';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import { getBasketTotal } from '../reducer';
-import CurrencyFormat from 'react-currency-format';
+import * as yup from "yup";
+import { useFormik } from "formik";
 
 
 
@@ -66,6 +67,27 @@ const [amount,setamount]=useState(getBasketTotal(basket))
       }
 
 
+      const formvalidationSchema = yup.object({
+        name: yup.string().required("UserName is required ⚠️"),
+    
+        Address: yup.string().required("Address is required ⚠️"),
+        Mobile: yup.number().required("Mobile number is required ⚠️"),
+      });
+    
+      const { handleSubmit, values, handleChange, handleBlur, errors, touched } =
+        useFormik({
+          initialValues: {
+            name: "",
+            Address: "",
+            Mobile: "",
+          },
+          validationSchema: formvalidationSchema,
+          onSubmit: (values) => {
+           
+            
+          },
+        });
+
 
   return (
     <div className='payment'>
@@ -78,15 +100,39 @@ const [amount,setamount]=useState(getBasketTotal(basket))
         <div className='payment_section'>
             <div className='payment_title'>
                 <h3>
-                    Delivery Address
+                    Delivery Address:
                 </h3>
             </div>
             <div className='payment_address'>
                 <form>
 
-                <h5>Name:  <TextField id="standard-basic" label="" variant="standard" /></h5>
-                <h5>Address: <TextField id="standard-basic" label="" variant="standard" /> </h5>
-                <h5>Phone:  <TextField id="standard-basic" label="" variant="standard" /></h5>
+               <h5> 
+                <span className='make'>
+                 <TextField id="standard-basic"  
+          name="name"
+          value={values.name}
+          error={errors.name && touched.name}
+          helperText={errors.name && touched.name ? errors.name : ``}
+          onChange={handleChange}
+          onBlur={handleBlur}
+          label="Name" 
+          variant="standard"  />
+           </span>
+           </h5>
+                <h5> <span className='make'><TextField id="standard-basic"
+          name="Address"
+          value={values.Address}
+          error={errors.Address && touched.Address}
+          helperText={errors.Address && touched.Address ? errors.Address : ``}
+          onChange={handleChange}
+          onBlur={handleBlur}label="Address" variant="standard" /></span></h5> 
+                <h5> <span className='make'> <TextField id="standard-basic"  name="Mobile"
+          value={values.Mobile}
+          error={errors.address && touched.Mobile}
+          helperText={errors.Mobile && touched.Mobile ? errors.Mobile : ``}
+          onChange={handleChange}
+          onBlur={handleBlur}
+          label=" Mobile" variant="standard" /></span></h5>
                 
                 </form>
             </div>
@@ -106,28 +152,28 @@ const [amount,setamount]=useState(getBasketTotal(basket))
         <div className='payment_sections '>
            
             <div className='payment_details'>
-            <CurrencyFormat renderText={(value)=>(
+            {/* <CurrencyFormat renderText={(value)=>( */}
         <>
         <p className='p'>
            Total Order  ({basket.length} items):
             <div>
-
-            <strong>{value}</strong>
+             RS:
+            <strong>{getBasketTotal(basket)}</strong>/-
             </div>
         </p>
         
     </>
 
-      )
+      {/* ) */}
 
-      }
-      decimalScale={2}
+      {/* } */}
+      {/* decimalScale={2}
       value={getBasketTotal(basket)}
       // value={getBasketTotal(basket)}
       displayType={"text"}
       thousandSeparator={true}
-      prefix={"RS: "}
-      />
+      prefix={"RS: "} */}
+      {/* /> */}
             
             <Fab variant="extended" onClick={handleSubmit1}><CheckCircleIcon sx={{ mr: 1 }}/>BUY NOW</Fab>
             </div>

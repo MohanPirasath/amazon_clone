@@ -1,16 +1,37 @@
 
 import { Routes, Route, Link,useNavigate } from "react-router-dom";
+import { useFormik } from "formik";
+import * as yup from "yup";
 import React,{useState} from 'react'
 import "./login.css"
 // import API from "../API/API.js"
 
 function Login() {
+  // const formvalidationSchema = yup.object({
+  //   email: yup
+  //     .string()
+  //     .required("Plz Fill up the Username")
+  //     .min(4, "Needed long username"),
+  //   password: yup
+  //     .string()
+  //     .required("Plz Fill up the Username")
+  //     .min(4, "Needed long password"),
+  // });
+  // const { handleChange, handleBlur, values, errors, touched, handleSubmit } =
+  //   useFormik({
+  //     initialValues: {
+  //       email: "",
+  //       password: "",
+  //     },
+  //     validationSchema: formvalidationSchema,
+  //     onSubmit: () => navigate("/Home"),
+  //   });
  const API = "https://my-third-project.herokuapp.com"
 
   const navigate =useNavigate()
 
-    const [email, setemail] = useState("");
-    const [password, setpassword] = useState("");
+    // const [email, setemail] = useState("");
+    // const [password, setpassword] = useState("");
 
    const signin = async(e) => {
     e.preventDefault();
@@ -19,8 +40,8 @@ function Login() {
         const fix= await fetch(`${API}/login`, {
         method: "POST",
         body: JSON.stringify({
-          username:email,
-          password:password,
+          username:values.email,
+          password:values.password,
         }),
         headers: {
           "Content-Type": "application/json",
@@ -52,8 +73,8 @@ function Login() {
         const fix= await fetch(`${API}/resetpassword`, {
         method: "POST",
         body: JSON.stringify({
-          username:email,
-          password:password,
+          username:values.email,
+          password:values.password,
         }),
         headers: {
           "Content-Type": "application/json",
@@ -88,8 +109,8 @@ const signup = async(e) =>{
     const fix= await fetch(`${API}/signup`, {
     method: "POST",
     body: JSON.stringify({
-      username:email,
-      password:password,
+      username:values.email,
+      password:values.password,
     }),
     headers: {
       "Content-Type": "application/json",
@@ -114,6 +135,25 @@ const signup = async(e) =>{
     console.log(err)
   }
 }
+const formvalidationSchema = yup.object({
+  email: yup
+    .string()
+    .required("Plz Fill up the Username")
+    .min(4, "Needed long username"),
+  password: yup
+    .string()
+    .required("Plz Fill up the Username")
+    .min(4, "Needed long password"),
+});
+const { handleChange, handleBlur, values, errors, touched, handleSubmit } =
+  useFormik({
+    initialValues: {
+      email:"",
+      password:"",
+    },
+    validationSchema: formvalidationSchema,
+    // onSubmit: () => navigate("/Home"),
+  });
 
   return (
     <div className='login'>
@@ -126,16 +166,26 @@ const signup = async(e) =>{
             <h5>
                 E-mail
             </h5>
-            <input type={"text"} value={email} onChange={(e)=>{
-                setemail(e.target.value)
-            }} required />
+            <input type={"text"}  
+            name="email"
+            value={values.email}
+            error={errors.email && touched.email}
+            helperText={
+              errors.email && touched.email ? errors.email : ""
+            }
+            onBlur={handleBlur}
+             onChange={handleChange} required="true" />
             <h5>
                 Password
             </h5>
-            <input type="password" value={password}  onChange={(e)=>{
-                setpassword(e.target.value)
-            }} required/>
-            <button className="login_signin" onClick={signin}>Sign IN</button>
+            <input type="password" value={values.password} 
+             name="password"
+            error={errors.password && touched.password}
+            helperText={
+              errors.password && touched.password ? errors.password : ""
+            }
+            onBlur={handleBlur}  onChange={handleChange} required="true" />
+            <button className="login_signin" onClick={signin} type="submit">Sign IN</button>
 
         </form>
         <p>

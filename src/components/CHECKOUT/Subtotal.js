@@ -4,8 +4,7 @@
 
 import React,{useState} from 'react'
 import "./subtotal.css"
-import CurrencyFormat from 'react-currency-format';
-// import ShoppingBasket from '@mui/icons-material/ShoppingBasket';
+
 import { useStateValue } from '../CHECKOUT/StateProvider';
 import { getBasketTotal } from './reducer';
 import { useNavigate } from 'react-router-dom';
@@ -13,35 +12,48 @@ import { useNavigate } from 'react-router-dom';
 
 function Subtotal() {
   const [{basket},dispatch]=useStateValue();
-  const navigate=useNavigate()
-  // const [no_item,setitem]=useState(0);
 
+  const navigate=useNavigate();
+ 
   return (
     <div className='subtotal'>
-      <CurrencyFormat renderText={(value)=>(
+      {/* <CurrencyFormat renderText={(value)=>( */}
         <>
         <p className='p'>
             Subtotal ({basket.length} items):
-            <strong>{value}</strong>
+            {/* <strong>{value}</strong> */}
+           <span>RS:</span> 
+            <strong>{getBasketTotal(basket)}</strong>/-
         </p>
         <small className='subtotal_gift'>
         <input type="checkbox"  /> This order contains a gift
         </small>
     </>
 
-      )
+      {/* // ) */}
 
-      }
-      decimalScale={2}
+      {/* } */}
+      {/* decimalScale={2}
       value={getBasketTotal(basket)}
       // value={getBasketTotal(basket)}
       displayType={"text"}
       thousandSeparator={true}
-      prefix={"RS: "}
-      />
+      prefix={"RS: "} */}
+      {/* /> */}
       <button onClick={(event)=>navigate("payment")}>Proceed to Checkout</button>
     </div>
   )
+}
+
+
+const valuereader = ({basket,value,setvalue})=>{
+  // const v = basket?.reduce((amount, item) => item.price + amount, 0);
+  basket.map((item)=>{
+      const v = setvalue(value + item.price)
+  console.log("value",v)
+
+  })
+  
 }
 
 export default Subtotal

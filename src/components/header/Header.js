@@ -13,7 +13,7 @@ import { useStateValue } from '../CHECKOUT/StateProvider';
       <div className='header'>
         <div className='header_content'>
             {/* logo */}
-            <Link to="/">
+            <Link to="/home">
                 <img src='https://www.the-sun.com/wp-content/uploads/sites/6/2022/02/NINTCHDBPICT000561981244.jpg' alt='logo' className='header_logo'/>
               </Link>
             <div className='search_bar'>
@@ -33,7 +33,7 @@ import { useStateValue } from '../CHECKOUT/StateProvider';
                     </span>
             <Link to="/">
                     <span className='header_option_linedw'>
-                        sign in
+                        sign out
                     </span>
                     </Link>
                 </div>
